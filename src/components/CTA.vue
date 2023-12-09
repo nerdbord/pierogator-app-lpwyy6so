@@ -20,6 +20,8 @@ button {
 	transition: background-color 0.2s;
 	font-size: $font-size-root;
 	font-weight: 600;
+	line-height: 16px;
+	letter-spacing: 0%;
 
 	&:hover,
 	&:active {
