@@ -1,6 +1,7 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router';
 import { RoutesNames } from '@/enums/RoutesNames.enum';
+import { TitleTypeEnum } from '@/enums/TitleType.enum';
 
 const routes = [
 	{
@@ -13,6 +14,7 @@ const routes = [
 				component: () => import('@/views/Main.vue'),
 				meta: {
 					title: 'Pierogarnia',
+					titleType: TitleTypeEnum.a,
 				},
 			},
 			{
@@ -21,6 +23,7 @@ const routes = [
 				component: () => import('@/views/Add.vue'),
 				meta: {
 					title: 'Pierogator świąteczny',
+					titleType: TitleTypeEnum.b,
 				},
 			},
 			{
@@ -29,6 +32,7 @@ const routes = [
 				component: () => import('@/views/ItemPage.vue'),
 				meta: {
 					title: 'Pierogator świąteczny',
+					titleType: TitleTypeEnum.b,
 				},
 			},
 		],
