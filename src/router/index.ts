@@ -1,26 +1,43 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import { RoutesNames } from '@/enums/RoutesNames.enum';
 
 const routes = [
-  {
-    path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
-    children: [
-      {
-        path: '',
-        name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (Home-[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('@/views/Home.vue'),
-      },
-    ],
-  },
-]
+	{
+		path: '/',
+		component: () => import('@/layouts/default/Layout.vue'),
+		children: [
+			{
+				path: '',
+				name: RoutesNames.Main,
+				component: () => import('@/views/Main.vue'),
+				meta: {
+					title: 'Pierogarnia',
+				},
+			},
+			{
+				path: '/add',
+				name: RoutesNames.Add,
+				component: () => import('@/views/Add.vue'),
+				meta: {
+					title: 'Pierogator świąteczny',
+				},
+			},
+			{
+				path: ':id',
+				name: RoutesNames.ItemPage,
+				component: () => import('@/views/ItemPage.vue'),
+				meta: {
+					title: 'Pierogator świąteczny',
+				},
+			},
+		],
+	},
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
-})
+	history: createWebHistory(process.env.BASE_URL),
+	routes,
+});
 
-export default router
+export default router;
