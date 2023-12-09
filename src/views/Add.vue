@@ -5,4 +5,9 @@
 			<li>form z pierogami</li>
 		</ul>
 	</div>
+	<DumplingGenerator />
 </template>
+
+<script setup lang="ts">
+import DumplingGenerator from '@/components/DumplingGenerator.vue';
+</script>
