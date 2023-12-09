@@ -6,3 +6,7 @@
 		</ul>
 	</div>
 </template>
+
+<script setup lang="ts">
+// asdf
+</script>
