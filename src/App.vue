@@ -13,6 +13,7 @@
 #app {
 	font-family: 'Poppins';
 	font-weight: 400;
+	box-sizing: border-box !important;
 
 	h1 {
 	}
