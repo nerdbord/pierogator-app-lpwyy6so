@@ -8,6 +8,7 @@
 
 <style>
 @import url('./styles/typography.scss');
+@import url('./styles/variables.scss');
 
 #app {
 	font-family: 'Poppins';
