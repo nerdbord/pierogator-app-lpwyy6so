@@ -25,8 +25,9 @@ import { ref } from 'vue';
 import mockPicture from '../assets/dp.png';
 import Button from './Button.vue';
 import { getImage } from '../api/openai/getImage';
+import { getName } from '../api/openai/getName';
 
-const dumplingName = ref('test test');
+const dumplingName = ref();
 const pictureUrl = ref();
 
 function handleNameUpdate(value: string): void {
@@ -34,14 +35,9 @@ function handleNameUpdate(value: string): void {
 }
 
 async function generateImage(): Promise<void> {
-	const imgUrl = await getImage();
+	const [imgUrl, name] = await Promise.all([getImage(), getName()]);
+	handleNameUpdate(name);
 	pictureUrl.value = imgUrl;
-}
-
-async function generateName(): Promise<void> {
-	// todo: getName()
-	// const dumplingName = await getName();
-	// handleNameUpdate(dumplingName);
 }
 </script>
 

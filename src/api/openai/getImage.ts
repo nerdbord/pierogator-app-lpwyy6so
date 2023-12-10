@@ -16,8 +16,8 @@ interface GetImageResponse {
 interface GetImagePayload {
 	model: ApiModelsEnum;
 	prompt: string;
-	n: number;
-	size: string;
+	n: 1;
+	size: '1024x1024';
 }
 
 export async function getImage(prompt = 'zdjęcie jakiegoś polskiego jedzenia') {

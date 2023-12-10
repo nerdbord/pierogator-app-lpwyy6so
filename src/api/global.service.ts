@@ -6,8 +6,6 @@ export async function postData<T, K>(path: string, body: T): Promise<K> {
 		const res = await API.post(path, body);
 		const data = res.data;
 
-		console.log('postData - ', data);
-
 		return res.data as K;
 	} catch (err) {
 		const error = err as AxiosError;
