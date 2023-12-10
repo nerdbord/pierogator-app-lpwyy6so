@@ -1,5 +1,5 @@
 <template>
-	<div v-if="isLoading">
+	<div v-if="isLoading" style="margin-right: 8px">
 		<v-img :src="loader" width="36" height="36" class="loader"></v-img>
 	</div>
 </template>

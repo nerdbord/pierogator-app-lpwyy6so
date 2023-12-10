@@ -23,8 +23,11 @@ button {
 	border-radius: $border-radius-base;
 	background-color: transparent;
 	transition: background-color 0.2s;
+	font-family: 'Poppins';
 	font-size: $font-size-root;
 	font-weight: 500;
+	line-height: 16px;
+	letter-spacing: 0%;
 
 	&:hover,
 	&:active {
