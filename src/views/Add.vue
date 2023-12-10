@@ -16,12 +16,12 @@
 import DumplingGenerator from '@/components/DumplingGenerator.vue';
 import CTA from '@/components/CTA.vue';
 import { ref } from 'vue';
+import { useDumplingsStore, Dumpling } from '../store/dumplings.store';
 
-const testDumpling = 'asdf';
-
-const savedDumplings = ref<string[]>([]);
+const dumplingStore = useDumplingsStore();
+const testDumpling = new Dumpling();
 
 function saveDumpling(): void {
-	savedDumplings.value.push('testDumpling');
+	dumplingStore.addDumpling(testDumpling);
 }
 </script>
