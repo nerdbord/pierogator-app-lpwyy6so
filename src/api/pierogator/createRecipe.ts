@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Dumpling } from '@/models/Dumpling';
 import { postData } from '../global.service';
 import { Recipe } from '@/models/Recipe';
 

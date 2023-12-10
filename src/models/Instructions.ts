@@ -4,7 +4,7 @@ export class Instructions {
 	forming_and_cooking_dumplings: string[] = [];
 	serving: string[] = [];
 
-	setInstructions(instructions: Instructions): this {
+	setInstructions(instructions: Omit<Instructions, 'setInstructions'>): this {
 		this.dough_preparation = instructions.dough_preparation;
 		this.filling_preparation = instructions.filling_preparation;
 		this.forming_and_cooking_dumplings =

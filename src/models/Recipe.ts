@@ -17,12 +17,12 @@ export class Recipe {
 		return this;
 	}
 
-	setIngredients(ingredients: Ingredients): this {
+	setIngredients(ingredients: Omit<Ingredients, 'setIngredients'>): this {
 		this.ingredients.setIngredients(ingredients);
 		return this;
 	}
 
-	setInstructions(instructions: Instructions): this {
+	setInstructions(instructions: Omit<Instructions, 'setInstructions'>): this {
 		this.instructions.setInstructions(instructions);
 		return this;
 	}
