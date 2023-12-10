@@ -1,12 +1,20 @@
 <template>
-	<button>{{ buttonText }}</button>
+	<button @click="handleClick">{{ buttonText }}</button>
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits<{
+	(e: 'click'): void;
+}>();
+
 const props = defineProps({
 	isDisabled: { type: Boolean, default: false },
 	buttonText: { type: String, required: true },
 });
+
+function handleClick(): void {
+	emit('click');
+}
 </script>
 
 <style scoped lang="scss">

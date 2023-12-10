@@ -19,14 +19,12 @@
 </template>
 
 <script setup lang="ts">
+import { PropType, ref } from 'vue';
 import SectionHeader from './SectionHeader.vue';
 import Input from './Input.vue';
-import { ref } from 'vue';
-import mockPicture from '../assets/dp.png';
 import Button from './Button.vue';
 import { getImage } from '../api/openai/getImage';
 import { getName } from '../api/openai/getName';
-import { PropType } from 'vue';
 
 const props = defineProps({
 	ingredients: { type: Array as PropType<string[]>, required: true },
@@ -44,7 +42,7 @@ async function generateImage(): Promise<void> {
 		getImage(props.ingredients),
 		getName(),
 	]);
-	handleNameUpdate(name);
+	handleNameUpdate(name.replace(`"`, ''));
 	pictureUrl.value = imgUrl;
 }
 </script>
