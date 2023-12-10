@@ -11,7 +11,7 @@
 		</h2>
 		<div class="d-flex">
 			<Loader />
-			<Button :button-text="'Generuj'" />
+			<slot></slot>
 		</div>
 	</header>
 </template>
