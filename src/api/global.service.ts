@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { API } from './api';
+import { useGlobalStore } from '@/store/app';
 
 function handleApiError<K>(error: AxiosError): K {
 	let message = 'Coś poszło nie tak, spróbuj ponownie';
@@ -13,6 +14,8 @@ function handleApiError<K>(error: AxiosError): K {
 }
 
 export async function postData<T, K = void>(path: string, body: T): Promise<K> {
+	const globalStore = useGlobalStore();
+	globalStore.setLoading(true);
 	try {
 		const res = await API.post(path, body);
 		const data = res.data;
@@ -25,6 +28,8 @@ export async function postData<T, K = void>(path: string, body: T): Promise<K> {
 }
 
 export async function deleteData(path: string): Promise<void> {
+	const globalStore = useGlobalStore();
+	globalStore.setLoading(true);
 	try {
 		await API.delete(path);
 	} catch (err) {
@@ -34,6 +39,8 @@ export async function deleteData(path: string): Promise<void> {
 }
 
 export async function getData<T>(path: string): Promise<T> {
+	const globalStore = useGlobalStore();
+	globalStore.setLoading(true);
 	try {
 		const res = await API.get(path);
 		return res.data;

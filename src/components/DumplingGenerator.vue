@@ -25,11 +25,13 @@ import Input from './Input.vue';
 import Button from './Button.vue';
 import { getImage } from '../api/openai/getImage';
 import { getName } from '../api/openai/getName';
+import { useGlobalStore } from '@/store/app';
 
 const props = defineProps({
 	ingredients: { type: Array as PropType<string[]>, required: true },
 });
 
+const globalStore = useGlobalStore();
 const dumplingName = ref();
 const pictureUrl = ref();
 
@@ -42,8 +44,11 @@ async function generateImage(): Promise<void> {
 		getImage(props.ingredients),
 		getName(),
 	]);
-	handleNameUpdate(name.replace(`"`, ''));
-	pictureUrl.value = imgUrl;
+	globalStore.setLoading(false);
+	if (name && imgUrl) {
+		handleNameUpdate(name.replace(`"`, ''));
+		pictureUrl.value = imgUrl;
+	}
 }
 </script>
 

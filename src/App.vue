@@ -3,7 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-//
+import { useGlobalStore } from './store/app';
+
+const globalStore = useGlobalStore();
 </script>
 
 <style>
