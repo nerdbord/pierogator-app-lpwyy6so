@@ -11,7 +11,7 @@ import loader from '../assets/loader.svg';
 const props = defineProps({
 	isLoading: {
 		type: Boolean,
-		default: true, //TODO: change it to false value
+		default: false,
 	},
 });
 </script>

@@ -9,8 +9,8 @@ const globalStore = useGlobalStore();
 </script>
 
 <style>
-@import url('./styles/typography.scss');
-@import url('./styles/variables.scss');
+@import './styles/typography.scss';
+@import './styles/variables.scss';
 
 #app {
 	font-family: 'Poppins';
