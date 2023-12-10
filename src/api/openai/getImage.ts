@@ -20,12 +20,14 @@ interface GetImagePayload {
 	size: '1024x1024';
 }
 
-export async function getImage(prompt = 'zdjęcie jakiegoś polskiego jedzenia') {
+export async function getImage(ingredients: string[]) {
 	const data = await postData<GetImagePayload, GetImageResponse>(
 		'/openai/images/generations',
 		{
 			model: ApiModelsEnum.DALL,
-			prompt,
+			prompt: `Zdjęcie pieroga, którego składniki to: ${ingredients.join(
+				', '
+			)}`,
 			n: 1,
 			size: '1024x1024',
 		}

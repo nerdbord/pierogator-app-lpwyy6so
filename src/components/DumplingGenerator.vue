@@ -26,6 +26,11 @@ import mockPicture from '../assets/dp.png';
 import Button from './Button.vue';
 import { getImage } from '../api/openai/getImage';
 import { getName } from '../api/openai/getName';
+import { PropType } from 'vue';
+
+const props = defineProps({
+	ingredients: { type: Array as PropType<string[]>, required: true },
+});
 
 const dumplingName = ref();
 const pictureUrl = ref();
@@ -35,7 +40,10 @@ function handleNameUpdate(value: string): void {
 }
 
 async function generateImage(): Promise<void> {
-	const [imgUrl, name] = await Promise.all([getImage(), getName()]);
+	const [imgUrl, name] = await Promise.all([
+		getImage(props.ingredients),
+		getName(),
+	]);
 	handleNameUpdate(name);
 	pictureUrl.value = imgUrl;
 }
