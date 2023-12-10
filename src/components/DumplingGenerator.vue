@@ -50,7 +50,7 @@ async function generateImage(): Promise<void> {
 	]);
 	globalStore.setLoading(false);
 	if (name && imgUrl) {
-		handleNameUpdate(name.replace(`"`, ''));
+		handleNameUpdate(name.replaceAll(`"`, ''));
 		pictureUrl.value = imgUrl;
 	}
 }

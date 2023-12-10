@@ -44,6 +44,6 @@ testRecipe.setInstructions({
 });
 
 function saveDumpling(): void {
-	dumplingStore.addDumpling(testRecipe);
+	dumplingStore.addRecipe(testRecipe);
 }
 </script>

@@ -32,7 +32,7 @@ export async function getName(prompt = 'truskawki, borówki') {
 		const messages: Message[] = [
 			{
 				role: 'user',
-				content: `Wymyśl nazwę dla pieroga, który składa się z: ${prompt}`,
+				content: `Wymyśl nazwę dla pieroga, którego składniki to: ${prompt}`,
 			},
 		];
 
@@ -45,9 +45,7 @@ export async function getName(prompt = 'truskawki, borówki') {
 		);
 
 		const choices: Choice[] = data.choices;
-		console.log('getName choices - ', choices);
 		const generatedName = choices[0].message.content;
-		console.log('getName name - ', generatedName);
 
 		return generatedName;
 	}
