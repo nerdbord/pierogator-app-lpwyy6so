@@ -5,6 +5,8 @@ import { getAllRecipes } from '@/api/pierogator/getAllRecipes';
 import { getMyRecipes } from '@/api/pierogator/getMyRecipes';
 import { getRecipeById } from '@/api/pierogator/getRecipeById';
 import { Recipe } from '@/models/Recipe';
+import { avoidMultipleRequest } from '@/helpers.ts/avoidMultipleRequest';
+
 interface DumplingsStore {
 	allRecipes: Recipe[];
 	myRecipes: Recipe[];
@@ -20,25 +22,25 @@ const initState = (): DumplingsStore => ({
 export const useDumplingsStore = defineStore('dumplingsStore', {
 	state: initState,
 	actions: {
-		async getAllDumplings(): Promise<void> {
+		async getAllRecipes(): Promise<void> {
 			this.allRecipes = await getAllRecipes();
 		},
-		async getMyDumplings(): Promise<void> {
+		async getMyRecipes(): Promise<void> {
 			this.myRecipes = await getMyRecipes();
 		},
-		async getDumpling(recipeId: string): Promise<void> {
+		async getRecipe(recipeId: string): Promise<void> {
 			this.currentRecipe = await getRecipeById(recipeId);
 		},
-		async addDumpling(recipe: Recipe): Promise<void> {
+		async addRecipe(recipe: Recipe): Promise<void> {
 			await createRecipe(recipe);
 			this.fetchRecipes();
 		},
-		async removeDumpling(recipeId: string): Promise<void> {
+		async removeRecipe(recipeId: string): Promise<void> {
 			await deleteRecipe(recipeId);
 			this.fetchRecipes();
 		},
 		async fetchRecipes(): Promise<void> {
-			await Promise.all([this.getAllDumplings(), this.getMyDumplings()]);
+			await Promise.all([this.getAllRecipes(), this.getMyRecipes()]);
 		},
 	},
 });

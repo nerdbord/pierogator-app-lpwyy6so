@@ -1,7 +1,11 @@
 <template>
 	<section>
 		<SectionHeader :header-text="'Pieróg'">
-			<Button :button-text="'Generuj'" @click="generateImage" />
+			<Button
+				:button-text="'Generuj'"
+				:is-disabled="globalStore.isLoading"
+				@click="generateImage"
+			/>
 		</SectionHeader>
 		<main v-if="pictureUrl" class="picture--container">
 			<v-img :width="'100%'" :max-height="300" :src="pictureUrl" cover></v-img>

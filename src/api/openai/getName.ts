@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { API } from '../api';
 import { ApiModelsEnum } from '@/enums/ApiModels.enum';
 import { postData } from '../global.service';
+import { avoidMultipleRequest } from '@/helpers.ts/avoidMultipleRequest';
 
 type Message = {
 	role: 'system' | 'user' | 'assistant';
@@ -26,25 +27,28 @@ interface Choice {
 }
 
 export async function getName(prompt = 'truskawki, borówki') {
-	const messages: Message[] = [
-		{
-			role: 'user',
-			content: `Wymyśl nazwę dla pieroga, który składa się z: ${prompt}`,
-		},
-	];
+	const isApiCallAvailable = await avoidMultipleRequest('getName');
+	if (isApiCallAvailable) {
+		const messages: Message[] = [
+			{
+				role: 'user',
+				content: `Wymyśl nazwę dla pieroga, który składa się z: ${prompt}`,
+			},
+		];
 
-	const data = await postData<GetNamePayload, GetNameResponse>(
-		'/openai/chat/completions',
-		{
-			model: ApiModelsEnum.GPT,
-			messages,
-		}
-	);
+		const data = await postData<GetNamePayload, GetNameResponse>(
+			'/openai/chat/completions',
+			{
+				model: ApiModelsEnum.GPT,
+				messages,
+			}
+		);
 
-	const choices: Choice[] = data.choices;
-	console.log('getName choices - ', choices);
-	const generatedName = choices[0].message.content;
-	console.log('getName name - ', generatedName);
+		const choices: Choice[] = data.choices;
+		console.log('getName choices - ', choices);
+		const generatedName = choices[0].message.content;
+		console.log('getName name - ', generatedName);
 
-	return generatedName;
+		return generatedName;
+	}
 }

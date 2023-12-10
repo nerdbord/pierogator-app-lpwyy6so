@@ -1,8 +1,28 @@
-// Utilities
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-export const useAppStore = defineStore('app', {
-  state: () => ({
-    //
-  }),
-})
+interface GlobalStore {
+	isLoading: boolean;
+	currentRequests: string[];
+}
+
+const initState = (): GlobalStore => ({
+	isLoading: false,
+	currentRequests: [],
+});
+
+export const useGlobalStore = defineStore('globalStore', {
+	state: initState,
+	actions: {
+		setLoading(value: boolean): void {
+			this.isLoading = value;
+		},
+		addRequest(requestName: string): void {
+			this.currentRequests.push(requestName);
+		},
+		removeRequest(requestName: string): void {
+			this.currentRequests = this.currentRequests.filter(
+				(r) => r !== requestName
+			);
+		},
+	},
+});
