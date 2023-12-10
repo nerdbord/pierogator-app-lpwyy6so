@@ -2,15 +2,18 @@ import { AxiosError } from 'axios';
 import { API } from './api';
 import { useGlobalStore } from '@/store/app';
 
-function handleApiError<K>(error: AxiosError): K {
+function handleApiError<T>(error: AxiosError): T {
+	const globalStore = useGlobalStore();
+	globalStore.setLoading(false);
+
 	let message = 'Coś poszło nie tak, spróbuj ponownie';
 	if (error.response?.status === 401 || error.response?.status === 403) {
 		message = 'Błąd autoryzacji';
 	}
 
-	//TODO: display error message (globalStore?)
+	globalStore.addErrorMessage(message);
 
-	throw new Error('postData error - ' + message);
+	throw Error('postData error - ' + message);
 }
 
 export async function postData<T, K = void>(path: string, body: T): Promise<K> {

@@ -3,11 +3,15 @@ import { defineStore } from 'pinia';
 interface GlobalStore {
 	isLoading: boolean;
 	currentRequests: string[];
+	isError: boolean;
+	errorMessage?: string;
 }
 
 const initState = (): GlobalStore => ({
 	isLoading: false,
 	currentRequests: [],
+	isError: false,
+	errorMessage: undefined,
 });
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -23,6 +27,15 @@ export const useGlobalStore = defineStore('globalStore', {
 			this.currentRequests = this.currentRequests.filter(
 				(r) => r !== requestName
 			);
+		},
+		addErrorMessage(errorMessage: string): void {
+			this.isError = true;
+			this.errorMessage = errorMessage;
+
+			setTimeout(() => {
+				this.errorMessage = undefined;
+				this.isError = false;
+			}, 5000);
 		},
 	},
 });
