@@ -10,7 +10,6 @@ const globalStore = useGlobalStore();
 
 <style>
 @import './styles/typography.scss';
-@import './styles/variables.scss';
 
 #app {
 	font-family: 'Poppins';
@@ -38,7 +37,7 @@ const globalStore = useGlobalStore();
 
 	p {
 		font-size: 14px;
-		line-height: 20;
+		line-height: 20px;
 		letter-spacing: 0%;
 		font-weight: 500;
 	}
