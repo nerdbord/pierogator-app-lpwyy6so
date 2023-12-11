@@ -18,7 +18,7 @@ const routes = [
 				},
 			},
 			{
-				path: '/add',
+				path: 'recipe/add',
 				name: RoutesNames.Add,
 				component: () => import('@/views/Add.vue'),
 				meta: {
@@ -27,7 +27,7 @@ const routes = [
 				},
 			},
 			{
-				path: ':id',
+				path: 'recipe/:id',
 				name: RoutesNames.ItemPage,
 				component: () => import('@/views/ItemPage.vue'),
 				meta: {
