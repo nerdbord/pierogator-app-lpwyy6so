@@ -4,6 +4,9 @@ import { Instructions } from './Instructions';
 export class Recipe {
 	name = '';
 	imageSrc = '';
+	id = '';
+	_id = '';
+	author = '';
 	ingredients = new Ingredients();
 	instructions = new Instructions();
 

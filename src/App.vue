@@ -37,7 +37,7 @@ const globalStore = useGlobalStore();
 
 	p {
 		font-size: 14px;
-		line-height: 20;
+		line-height: 20px;
 		letter-spacing: 0%;
 		font-weight: 500;
 	}
