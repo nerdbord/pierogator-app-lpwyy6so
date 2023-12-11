@@ -66,7 +66,10 @@ export async function getData<T>(path: string): Promise<T> {
 				Authorization: `${import.meta.env.VITE_API_KEY_NERDBORD}`,
 			},
 		});
-		return res.data;
+		if (res.data.recipes) {
+			return res.data.recipes as T;
+		}
+		return res.data as T;
 	} catch (err) {
 		const error = err as AxiosError;
 		return handleApiError(error);
