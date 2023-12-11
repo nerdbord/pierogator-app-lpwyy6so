@@ -105,15 +105,29 @@ const toogleFactorsInput = () => {
   if (InputsPrompt.factors.val === "") {
     return;
   }
+  console.log(InputsPrompt);
   InputsPrompt.factors.isDisable = !InputsPrompt.factors.isDisable;
 };
+
+function translateKeyName(key: string): string {
+  switch (key) {
+    case "cake":
+      return "ciasto";
+    case "feelings":
+      return "nadzienie";
+    case "factors":
+      return "składniki";
+    default:
+      return "nieznany klucz";
+  }
+}
 
 function filterAndTransform(inputPrompts: IInputPrompts): IFactor[] {
   return Object.entries(inputPrompts)
     .filter(([key, value]) => !value.isDisable) // Filtruje tylko obiekty z isDisable: false
     .map(([key, value]) => ({
       ...value, // Rozkłada istniejące właściwości obiektu
-      name: key, // Dodaje klucz jako nowe pole 'name'
+      name: translateKeyName(key), // Dodaje klucz jako nowe pole 'name'
     }));
 }
 type Message = {
@@ -121,29 +135,41 @@ type Message = {
   content: string;
 };
 
-function generatePromptMsgList(inputPrompts: IFactor[]): Message[] {
-  const res: Message[] = inputPrompts.map((item) => {
+function generatePromptMsgList(inputPrompts: IFactor[]): string[] {
+  const res: string[] = inputPrompts.map((item) => {
+    console.log(item);
     const promptContent =
       item.val !== ""
-        ? `Generate ${item.name} for dumplings considering the following information: ${item.val} in polish lang`
-        : `Generate ${item.name} for dumplings in polish lang`;
-    return {
-      role: "user",
-      content: promptContent,
-    };
+        ? `Wygeneruj ogolny opis ${item.name} na pierogi, uwzględniając następujące informacje: ${item.val} maxymalnie 60 znaków`
+        : `Wygeneruj ogolny opis  ${item.name} na pierogi ,maxymalnie 60 znaków kazdy po przecinku`;
+
+    return promptContent;
   });
 
   return res;
+}
+
+async function callToAllPrompts(promptList: string[]) {
+  const promises = promptList.map((prompt) => getFactors(prompt));
+  const dataTest = await Promise.all(promises);
+  return dataTest;
 }
 
 const sendPrompt = (e: Event) => {
   console.log("form was send!");
   console.log(InputsPrompt);
 
-  //TODO define array of prompt messages
   const unlockedPromptsMsg = filterAndTransform(InputsPrompt);
-  const promptMsgList = generatePromptMsgList(unlockedPromptsMsg);
-  getFactors(promptMsgList);
+  const promptList = generatePromptMsgList(unlockedPromptsMsg);
+
+  callToAllPrompts(promptList).then((dataTest) => {
+    console.log(dataTest);
+    console.log(InputsPrompt);
+    InputsPrompt;
+
+    //TODO
+    //fill responses
+  });
 };
 </script>
 <style lang="scss" scoped></style>

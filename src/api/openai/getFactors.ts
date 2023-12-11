@@ -24,26 +24,19 @@ interface GetNameResponse {
   [key: string]: string | number | Choice[];
 }
 
-export async function getFactors(promptList: Message[]) {
+export async function getFactors(promptList: string) {
   console.log(promptList);
   const data = await postData<GetNamePayload, any>("/openai/chat/completions", {
     model: ApiModelsEnum.GPT,
     messages: [
       {
         role: "user",
-        content:
-          "Wygeneruj  po przecinku przykładowe przymiotniki opisujace ciasto na pierogi",
-      },
-      {
-        role: "user",
-        content:
-          "Wygeneruj przykładowe po przecinku przymiotniki opisujace nadzienie na pierogi",
-      },
-      {
-        role: "user",
-        content: "Wygeneruj przykładowe składniki na pierogi-po przecinku ",
+        content: promptList,
       },
     ],
   });
-  console.log(data);
+  const choices: Choice[] = data.choices;
+  const generatedName = choices[0].message.content;
+
+  return generatedName;
 }
