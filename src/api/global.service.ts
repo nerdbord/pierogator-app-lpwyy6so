@@ -1,6 +1,7 @@
-import { AxiosError } from 'axios';
-import { API } from './api';
+import { AxiosError, AxiosInstance } from 'axios';
 import { useGlobalStore } from '@/store/app';
+import { API } from './api';
+import { ApiTypeEnum } from '@/enums/ApiType.enum';
 
 function handleApiError<T>(error: AxiosError): T {
 	const globalStore = useGlobalStore();
@@ -16,11 +17,22 @@ function handleApiError<T>(error: AxiosError): T {
 	throw Error('postData error - ' + message);
 }
 
-export async function postData<T, K = void>(path: string, body: T): Promise<K> {
+export async function postData<T, K = void>(
+	path: string,
+	body: T,
+	ApiType: ApiTypeEnum = ApiTypeEnum.NERDBORD
+): Promise<K> {
 	const globalStore = useGlobalStore();
 	globalStore.setLoading(true);
 	try {
-		const res = await API.post(path, body);
+		const res = await API.post(path, body, {
+			headers: {
+				Authorization:
+					ApiType === ApiTypeEnum.NERDBORD
+						? `${import.meta.env.VITE_API_KEY_NERDBORD}`
+						: `${import.meta.env.VITE_API_KEY_OPENAI}`,
+			},
+		});
 		const data = res.data;
 
 		return res.data as K;
@@ -34,7 +46,11 @@ export async function deleteData(path: string): Promise<void> {
 	const globalStore = useGlobalStore();
 	globalStore.setLoading(true);
 	try {
-		await API.delete(path);
+		await API.delete(path, {
+			headers: {
+				Authorization: `${import.meta.env.VITE_API_KEY_NERDBORD}`,
+			},
+		});
 	} catch (err) {
 		const error = err as AxiosError;
 		return handleApiError(error);
@@ -45,7 +61,11 @@ export async function getData<T>(path: string): Promise<T> {
 	const globalStore = useGlobalStore();
 	globalStore.setLoading(true);
 	try {
-		const res = await API.get(path);
+		const res = await API.get(path, {
+			headers: {
+				Authorization: `${import.meta.env.VITE_API_KEY_NERDBORD}`,
+			},
+		});
 		return res.data;
 	} catch (err) {
 		const error = err as AxiosError;

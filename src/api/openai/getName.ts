@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
-import { API } from '../api';
 import { ApiModelsEnum } from '@/enums/ApiModels.enum';
 import { postData } from '../global.service';
 import { avoidMultipleRequest } from '@/helpers.ts/avoidMultipleRequest';
+import { ApiTypeEnum } from '@/enums/ApiType.enum';
 
 type Message = {
 	role: 'system' | 'user' | 'assistant';
@@ -41,7 +41,8 @@ export async function getName(prompt = 'truskawki, borówki') {
 			{
 				model: ApiModelsEnum.GPT,
 				messages,
-			}
+			},
+			ApiTypeEnum.OPENAI
 		);
 
 		const choices: Choice[] = data.choices;
