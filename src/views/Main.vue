@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex flex-column" style="row-gap: 16px; column-gap: 20px">
 		<MyRecipes />
-		<!-- <AllRecipes /> -->
+		<AllRecipes />
 	</div>
 </template>
 
