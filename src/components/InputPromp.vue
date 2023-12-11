@@ -4,7 +4,7 @@
     <div
       class="prepand-Icon__prompt"
       :class="{ active: isDisabled }"
-      @click="handleDisableField"
+      @click="toogleDisabled"
     >
       <v-img :src="padlockImgSrc" width="18" height="18" />
     </div>
@@ -25,19 +25,25 @@ import { ref, computed } from "vue";
 import padlock_open from "@/assets/icons/padlock_open.svg";
 import padlock_close from "@/assets/icons/padlock_close.svg";
 
-defineProps({
+const emit = defineEmits<{
+  (event: "toogleState"): void;
+}>();
+
+const props = defineProps({
   label: { type: [String, Boolean], default: false },
   modelValue: { type: String, default: "" },
   class: { type: String, default: "input-prompt" },
   fieldType: { type: String, default: "text" },
+  isDisabled: { type: Boolean, default: false },
 });
-const isDisabled = ref(false);
+// const isDisabled = ref(false);
 
 const padlockImgSrc = computed(() => {
-  return isDisabled.value ? padlock_close : padlock_open;
+  return props.isDisabled ? padlock_close : padlock_open;
 });
-const handleDisableField = () => {
-  isDisabled.value = !isDisabled.value;
+
+const toogleDisabled = () => {
+  emit("toogleState");
 };
 </script>
 
@@ -50,6 +56,7 @@ const handleDisableField = () => {
   align-items: center;
   width: 34px;
   height: 34px;
+  cursor: pointer;
 }
 .active {
   background-color: yellow;

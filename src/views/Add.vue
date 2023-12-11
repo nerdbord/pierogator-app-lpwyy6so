@@ -4,9 +4,24 @@
       <SectionHeader :header-text="'Składniki'">
         <Button :button-text="'Generuj'" />
       </SectionHeader>
-      <InputPromp v-model="InputsPrompt.cake.val" label="Ciasto" />
-      <InputPromp v-model="InputsPrompt.feelings.val" label="Nadzienie" />
-      <InputPromp v-model="InputsPrompt.factors.val" label="Składniki" />
+      <InputPromp
+        v-model="InputsPrompt.cake.val"
+        label="Ciasto"
+        @toogleState="toogleCakeInput"
+        :is-disabled="InputsPrompt.cake.isDisable"
+      />
+      <InputPromp
+        v-model="InputsPrompt.feelings.val"
+        label="Nadzienie"
+        @toogleState="toogleFeelingsInput"
+        :is-disabled="InputsPrompt.feelings.isDisable"
+      />
+      <InputPromp
+        v-model="InputsPrompt.factors.val"
+        label="Składniki"
+        @toogleState="toogleFactorsInput"
+        :is-disabled="InputsPrompt.factors.isDisable"
+      />
     </form>
   </div>
   <DumplingGenerator
@@ -20,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, isProxy, toRaw } from "vue";
 import DumplingGenerator from "@/components/DumplingGenerator.vue";
 import InputPromp from "@/components/InputPromp.vue";
 import CTA from "@/components/CTA.vue";
@@ -29,8 +44,20 @@ import Button from "@/components/Button.vue";
 import { useDumplingsStore } from "../store/dumplings.store";
 import { Recipe } from "@/models/Recipe";
 import { Ingredients } from "@/models/Ingredients";
+import { Interface } from "readline";
+import { getFactors } from "@/api/openai/getFactors";
 
-const InputsPrompt = reactive({
+interface IFactor {
+  val: string;
+  isDisable: boolean;
+  name?: string;
+}
+interface IInputPrompts {
+  cake: IFactor;
+  feelings: IFactor;
+  factors: IFactor;
+}
+const InputsPrompt: IInputPrompts = reactive({
   cake: { val: "", isDisable: false },
   feelings: { val: "", isDisable: false },
   factors: { val: "", isDisable: false },
@@ -60,9 +87,63 @@ function saveDumpling(): void {
   dumplingStore.addDumpling(testRecipe);
 }
 
+const toogleCakeInput = () => {
+  if (InputsPrompt.cake.val === "") {
+    return;
+  }
+  InputsPrompt.cake.isDisable = !InputsPrompt.cake.isDisable;
+};
+
+const toogleFeelingsInput = () => {
+  if (InputsPrompt.feelings.val === "") {
+    return;
+  }
+  InputsPrompt.feelings.isDisable = !InputsPrompt.feelings.isDisable;
+};
+
+const toogleFactorsInput = () => {
+  if (InputsPrompt.factors.val === "") {
+    return;
+  }
+  InputsPrompt.factors.isDisable = !InputsPrompt.factors.isDisable;
+};
+
+function filterAndTransform(inputPrompts: IInputPrompts): IFactor[] {
+  return Object.entries(inputPrompts)
+    .filter(([key, value]) => !value.isDisable) // Filtruje tylko obiekty z isDisable: false
+    .map(([key, value]) => ({
+      ...value, // Rozkłada istniejące właściwości obiektu
+      name: key, // Dodaje klucz jako nowe pole 'name'
+    }));
+}
+type Message = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
+
+function generatePromptMsgList(inputPrompts: IFactor[]): Message[] {
+  const res: Message[] = inputPrompts.map((item) => {
+    const promptContent =
+      item.val !== ""
+        ? `Generate ${item.name} for dumplings considering the following information: ${item.val} in polish lang`
+        : `Generate ${item.name} for dumplings in polish lang`;
+    return {
+      role: "user",
+      content: promptContent,
+    };
+  });
+
+  return res;
+}
+
 const sendPrompt = (e: Event) => {
   console.log("form was send!");
-  console.log(InputsPrompt.cake.val);
+  console.log(InputsPrompt);
+
+  //TODO define array of prompt messages
+  const unlockedPromptsMsg = filterAndTransform(InputsPrompt);
+  const promptMsgList = generatePromptMsgList(unlockedPromptsMsg);
+  getFactors(promptMsgList);
 };
 </script>
 <style lang="scss" scoped></style>
