@@ -1,22 +1,31 @@
 <template>
-  <div class="d-flex input-prompt">
-    <label v-if="label">{{ label }}</label>
-    <div
-      class="prepand-Icon__prompt"
-      :class="{ active: isDisabled }"
-      @click="toogleDisabled"
-    >
-      <v-img :src="padlockImgSrc" width="18" height="18" />
+  <div class="d-flex flex-column input-prompt mt-4" style="gap: 7px">
+    <div>
+      <label v-if="label">{{ label }}</label>
     </div>
-    <input
-      :type="fieldType"
-      placeholder="Enter a Tag"
-      :value="modelValue"
-      :class="class"
-      v-bind="$attrs"
-      :disabled="isDisabled"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
+    <div class="d-flex px-4 py-4 input-prompt__wrapper">
+      <div
+        class="prepand-Icon__prompt mr-2"
+        :class="{ active: isDisabled }"
+        @click="toogleDisabled"
+      >
+        <v-img
+          :src="padlockImgSrc"
+          width="18"
+          height="18"
+          class="z-index:0 !imprtant"
+        />
+      </div>
+      <input
+        :type="fieldType"
+        placeholder="Enter a Tag"
+        :value="modelValue"
+        :class="class"
+        v-bind="$attrs"
+        :disabled="isDisabled"
+        @input="$emit('update:modelValue', $event.target.value)"
+      />
+    </div>
   </div>
 </template>
 
@@ -36,7 +45,6 @@ const props = defineProps({
   fieldType: { type: String, default: "text" },
   isDisabled: { type: Boolean, default: false },
 });
-// const isDisabled = ref(false);
 
 const padlockImgSrc = computed(() => {
   return props.isDisabled ? padlock_close : padlock_open;
@@ -48,8 +56,16 @@ const toogleDisabled = () => {
 </script>
 
 <style lang="scss" scoped>
+.input-prompt {
+  .input-prompt__wrapper {
+    background: linear-gradient(0deg, #f9f9f9, #f9f9f9),
+      linear-gradient(0deg, #e8e8e8, #e8e8e8);
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+  }
+}
 .prepand-Icon__prompt {
-  background-color: #d3d3d3;
+  background-color: #d6d6d6;
   border-radius: 25px;
   display: flex;
   justify-content: center;
@@ -59,6 +75,6 @@ const toogleDisabled = () => {
   cursor: pointer;
 }
 .active {
-  background-color: yellow;
+  background-color: #ffe5b2;
 }
 </style>

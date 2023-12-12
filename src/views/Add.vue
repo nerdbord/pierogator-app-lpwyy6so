@@ -26,7 +26,7 @@
   </div>
   <DumplingGenerator
     :ingredients="['banany, czekolada']"
-    style="margin-bottom: 40px"
+    style="margin: 32px 0"
   />
   <CTA
     :button-text="'Zapisz i przejdź do tworzenia przepisu'"
@@ -53,6 +53,7 @@ interface IFactor {
   name?: string;
 }
 interface IInputPrompts {
+  [key: string]: IFactor;
   cake: IFactor;
   feelings: IFactor;
   factors: IFactor;
@@ -105,7 +106,6 @@ const toogleFactorsInput = () => {
   if (InputsPrompt.factors.val === "") {
     return;
   }
-  console.log(InputsPrompt);
   InputsPrompt.factors.isDisable = !InputsPrompt.factors.isDisable;
 };
 
@@ -137,7 +137,6 @@ type Message = {
 
 function generatePromptMsgList(inputPrompts: IFactor[]): string[] {
   const res: string[] = inputPrompts.map((item) => {
-    console.log(item);
     const promptContent =
       item.val !== ""
         ? `Wygeneruj ogolny opis ${item.name} na pierogi, uwzględniając następujące informacje: ${item.val} maxymalnie 60 znaków`
@@ -156,19 +155,16 @@ async function callToAllPrompts(promptList: string[]) {
 }
 
 const sendPrompt = (e: Event) => {
-  console.log("form was send!");
-  console.log(InputsPrompt);
-
   const unlockedPromptsMsg = filterAndTransform(InputsPrompt);
   const promptList = generatePromptMsgList(unlockedPromptsMsg);
 
   callToAllPrompts(promptList).then((dataTest) => {
-    console.log(dataTest);
-    console.log(InputsPrompt);
-    InputsPrompt;
-
-    //TODO
-    //fill responses
+    let arrayIndex = 0;
+    for (let key in InputsPrompt) {
+      if (!InputsPrompt[key].isDisable && arrayIndex < dataTest.length) {
+        InputsPrompt[key].val = dataTest[arrayIndex++];
+      }
+    }
   });
 };
 </script>
