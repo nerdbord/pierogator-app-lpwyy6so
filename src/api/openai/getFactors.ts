@@ -1,5 +1,6 @@
 import { API } from "../api";
 import { ApiModelsEnum } from "@/enums/ApiModels.enum";
+import { ApiTypeEnum } from "@/enums/ApiType.enum";
 import { postData } from "../global.service";
 
 type Message = {
@@ -26,15 +27,19 @@ interface GetNameResponse {
 
 export async function getFactors(promptList: string) {
   console.log(promptList);
-  const data = await postData<GetNamePayload, any>("/openai/chat/completions", {
-    model: ApiModelsEnum.GPT,
-    messages: [
-      {
-        role: "user",
-        content: promptList,
-      },
-    ],
-  });
+  const data = await postData<GetNamePayload, any>(
+    "/openai/chat/completions",
+    {
+      model: ApiModelsEnum.GPT,
+      messages: [
+        {
+          role: "user",
+          content: promptList,
+        },
+      ],
+    },
+    ApiTypeEnum.OPENAI
+  );
   const choices: Choice[] = data.choices;
   const generatedName = choices[0].message.content;
 

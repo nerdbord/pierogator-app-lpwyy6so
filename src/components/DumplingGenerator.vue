@@ -66,7 +66,7 @@ function handleImgSrcUpdate(value: string): void {
 async function generateImage(): Promise<void> {
   const [imgUrl, name] = await Promise.all([
     getImage(props.ingredients),
-    getName(),
+    getName(props.ingredients.join(", ")),
   ]);
   globalStore.setLoading(false);
   if (name && imgUrl) {

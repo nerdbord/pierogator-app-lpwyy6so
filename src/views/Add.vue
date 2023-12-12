@@ -25,7 +25,7 @@
     </form>
   </div>
   <DumplingGenerator
-    :ingredients="['banany, czekolada']"
+    :ingredients="[InputsPrompt.factors.val]"
     :img-src="testRecipe.imageSrc"
     :name="testRecipe.name"
     style="margin-bottom: 40px"
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, isProxy, toRaw } from "vue";
+import { useGlobalStore } from "@/store/app";
 import DumplingGenerator from "@/components/DumplingGenerator.vue";
 import InputPromp from "@/components/InputPromp.vue";
 import CTA from "@/components/CTA.vue";
@@ -166,6 +167,7 @@ function generatePromptMsgList(inputPrompts: IFactor[]): string[] {
 async function callToAllPrompts(promptList: string[]) {
   const promises = promptList.map((prompt) => getFactors(prompt));
   const dataTest = await Promise.all(promises);
+  useGlobalStore().isLoading = false;
   return dataTest;
 }
 

@@ -17,6 +17,7 @@
         />
       </div>
       <input
+        style="width: 100%; outline: none"
         :type="fieldType"
         placeholder="Enter a Tag"
         :value="modelValue"
