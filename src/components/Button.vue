@@ -1,5 +1,7 @@
 <template>
-	<button @click="$emit('click')">{{ buttonText }}</button>
+	<button :disabled="isDisabled" @click="$emit('click')">
+		{{ buttonText }}
+	</button>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +30,10 @@ button {
 	font-weight: 500;
 	line-height: 16px;
 	letter-spacing: 0%;
+
+	&:disabled {
+		cursor: not-allowed;
+	}
 
 	&:hover,
 	&:active {

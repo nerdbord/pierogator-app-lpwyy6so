@@ -1,7 +1,11 @@
 <template>
   <section>
     <SectionHeader :header-text="'Pieróg'">
-      <Button :button-text="'Generuj'" @click="generateImage" />
+      <Button
+        :button-text="'Generuj'"
+        :is-disabled="globalStore.isLoading"
+        @click="generateImage"
+      />
     </SectionHeader>
     <main v-if="pictureUrl" class="picture--container">
       <v-img :width="'100%'" :max-height="300" :src="pictureUrl" cover></v-img>
@@ -19,22 +23,44 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref } from "vue";
+import { PropType, ref, watch } from "vue";
 import SectionHeader from "./SectionHeader.vue";
 import Input from "./Input.vue";
 import Button from "./Button.vue";
 import { getImage } from "../api/openai/getImage";
 import { getName } from "../api/openai/getName";
+import { useGlobalStore } from "@/store/app";
+
+const emit = defineEmits<{
+  (e: "updateImgSrc", url: string): void;
+  (e: "updateName", name: string): void;
+}>();
 
 const props = defineProps({
-  ingredients: { type: Array<string>, required: true },
+  ingredients: { type: Array as PropType<string[]>, required: true },
+  imgSrc: { type: String, required: true },
+  name: { type: String, required: true },
 });
 
+const globalStore = useGlobalStore();
 const dumplingName = ref();
 const pictureUrl = ref();
 
+watch(
+  () => props,
+  () => {
+    dumplingName.value = props.name;
+    pictureUrl.value = props.imgSrc;
+  },
+  { deep: true, immediate: true }
+);
+
 function handleNameUpdate(value: string): void {
-  dumplingName.value = value;
+  emit("updateName", value);
+}
+
+function handleImgSrcUpdate(value: string): void {
+  emit("updateImgSrc", value);
 }
 
 async function generateImage(): Promise<void> {
@@ -42,8 +68,11 @@ async function generateImage(): Promise<void> {
     getImage(props.ingredients),
     getName(),
   ]);
-  handleNameUpdate(name.replace(`"`, ""));
-  pictureUrl.value = imgUrl;
+  globalStore.setLoading(false);
+  if (name && imgUrl) {
+    handleImgSrcUpdate(imgUrl);
+    handleNameUpdate(name.replaceAll(`"`, ""));
+  }
 }
 </script>
 

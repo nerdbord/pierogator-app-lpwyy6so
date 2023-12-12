@@ -3,12 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-//
+import { useGlobalStore } from './store/app';
+
+const globalStore = useGlobalStore();
 </script>
 
 <style>
-@import url('./styles/typography.scss');
-@import url('./styles/variables.scss');
+@import './styles/typography.scss';
 
 #app {
 	font-family: 'Poppins';
@@ -36,7 +37,7 @@
 
 	p {
 		font-size: 14px;
-		line-height: 20;
+		line-height: 20px;
 		letter-spacing: 0%;
 		font-weight: 500;
 	}
