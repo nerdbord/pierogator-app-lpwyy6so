@@ -1,5 +1,8 @@
 <template>
-	<header class="d-flex justify-space-between align-center">
+	<header
+		class="d-flex justify-space-between align-center"
+		style="margin-bottom: 16px"
+	>
 		<div class="d-flex">
 			<slot></slot>
 		</div>

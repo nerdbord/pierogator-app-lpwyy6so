@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="margin-bottom: 32px">
 		<ReversedSectionHeader :header-text="'Pieróg'">
 			<Button :button-text="'Wróć'" @click="pushToPreviousPage" />
 		</ReversedSectionHeader>
@@ -38,10 +38,10 @@ function pushToPreviousPage(): void {
 	border-radius: $border-radius-base;
 	overflow: hidden;
 	width: 100%;
-	margin: 16px 0;
 	max-height: 280px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 16px;
 }
 </style>

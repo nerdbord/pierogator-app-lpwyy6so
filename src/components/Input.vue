@@ -60,7 +60,7 @@ label {
 input {
 	background: $col-gray-background;
 	border-radius: $border-radius-base;
-	border: 1px solid transparent;
+	border: 1px solid $col-gray-light;
 	padding: 16px;
 	color: $col-dark-green;
 	font-weight: 400;
@@ -71,6 +71,6 @@ input {
 	}
 }
 .disabled {
-	border: 1px solid $col-gray-light;
+	border: 1px solid transparent;
 }
 </style>
