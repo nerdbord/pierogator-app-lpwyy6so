@@ -1,11 +1,12 @@
 <template>
-	<div class="d-flex flex-column" style="row-gap: 16px; column-gap: 20px">
+	<div class="d-flex flex-column">
 		<PreviewHeader
 			:img-src="dumplingsStore.currentRecipe?.imageSrc || ''"
 			:name="dumplingsStore.currentRecipe?.name || ''"
 		>
 			<Button :button-text="'Wróć'" @click="pushToPreviousPage" />
 		</PreviewHeader>
+		<RecipeDetails />
 	</div>
 </template>
 
@@ -17,6 +18,7 @@ import { onBeforeMount, ref, watch } from 'vue';
 import { Recipe } from '@/models/Recipe';
 import { useDumplingsStore } from '@/store/dumplings.store';
 import { onUnmounted } from 'vue';
+import RecipeDetails from '@/components/RecipeDetails.vue';
 
 const dumplingsStore = useDumplingsStore();
 const recipe = ref(new Recipe());
