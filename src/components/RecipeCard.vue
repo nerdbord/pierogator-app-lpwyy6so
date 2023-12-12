@@ -1,12 +1,12 @@
 <template>
 	<div
-		class="d-flex flex-column"
+		class="d-flex flex-column justify-space-between"
 		style="width: calc(50% - 10px); margin-bottom: 20px; min-width: 170px"
 	>
-		<div class="card__image--container" @click="pushToRecipeView">
-			<v-img :src="imgSrc" cover></v-img>
-		</div>
 		<div>
+			<div class="card__image--container" @click="pushToRecipeView">
+				<v-img :src="imgSrc" cover></v-img>
+			</div>
 			<p class="card__name" @click="pushToRecipeView">
 				{{ handleNameLength(name) }}
 			</p>

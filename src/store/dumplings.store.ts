@@ -28,7 +28,7 @@ export const useDumplingsStore = defineStore('dumplingsStore', {
 		async getMyRecipes(): Promise<void> {
 			this.myRecipes = await getMyRecipes();
 		},
-		async getRecipe(recipeId: string): Promise<void> {
+		async getRecipeById(recipeId: string): Promise<void> {
 			this.currentRecipe = await getRecipeById(recipeId);
 		},
 		async addRecipe(recipe: Recipe): Promise<void> {
