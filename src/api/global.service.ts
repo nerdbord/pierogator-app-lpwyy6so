@@ -69,6 +69,9 @@ export async function getData<T>(path: string): Promise<T> {
 		if (res.data.recipes) {
 			return res.data.recipes as T;
 		}
+		if (res.data.recipe) {
+			return res.data.recipe as T;
+		}
 		return res.data as T;
 	} catch (err) {
 		const error = err as AxiosError;
