@@ -1,19 +1,8 @@
 <template>
 	<div>
-		<header class="d-flex justify-space-between align-center">
-			<div class="d-flex">
-				<slot></slot>
-			</div>
-			<h2 class="d-flex">
-				<v-img
-					height="30"
-					width="30"
-					:src="dumpling"
-					style="margin-right: 8px"
-				></v-img>
-				Pieróg
-			</h2>
-		</header>
+		<ReversedSectionHeader :header-text="'Pieróg'">
+			<Button :button-text="'Wróć'" @click="pushToPreviousPage" />
+		</ReversedSectionHeader>
 		<div class="d-flex flex-column">
 			<div class="preview__image--container">
 				<v-img :src="imgSrc" cover></v-img>
@@ -30,11 +19,17 @@ import Loader from './Loader.vue';
 import Button from './Button.vue';
 import Input from './Input.vue';
 import dumpling from '../assets/dumpling.svg';
+import ReversedSectionHeader from './ReversedSectionHeader.vue';
+import router from '@/router';
 
 const props = defineProps({
 	imgSrc: { type: String, required: true },
 	name: { type: String, required: true },
 });
+
+function pushToPreviousPage(): void {
+	router.go(-1);
+}
 </script>
 
 <style scoped lang="scss">
