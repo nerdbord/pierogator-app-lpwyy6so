@@ -56,6 +56,7 @@ watch(
 );
 
 function handleNameUpdate(value: string): void {
+  console.log(value);
   emit("updateName", value);
 }
 
