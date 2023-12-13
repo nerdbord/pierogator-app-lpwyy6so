@@ -1,24 +1,14 @@
-import { useGlobalStore } from '@/store/app';
+let currentRequests: string[] = [];
 
-export function avoidMultipleRequest(requestName: string): Promise<boolean> {
-	const globalStore = useGlobalStore();
-
+export function avoidMultipleRequest(request: string): Promise<boolean> {
 	return new Promise((resolve) => {
-		if (globalStore.currentRequests.includes(requestName)) {
+		if (currentRequests.includes(request)) {
 			resolve(false);
 		} else {
-			globalStore.addRequest(requestName);
-			let isPending = true;
+			currentRequests.push(request);
 			setTimeout(() => {
-				globalStore.removeRequest(requestName);
-				isPending = false;
-			}, 1000);
-
-			function checkIsPending() {
-				if (isPending) setTimeout(checkIsPending, 100);
-				else resolve(true);
-			}
-			checkIsPending();
+				currentRequests = currentRequests.filter((r) => r !== request);
+			}, 500);
 		}
 	});
 }
