@@ -23,7 +23,11 @@ interface DumplingsStore {
   allRecipes: Recipe[];
   myRecipes: Recipe[];
   currentRecipe?: Recipe;
-  generatingRecipe?: { factors: IInputPrompts; imgSrc: string };
+  generatingRecipe?: {
+    factors: IInputPrompts;
+    imgSrc: string;
+    recipeName: string;
+  };
 }
 
 const initState = (): DumplingsStore => ({
@@ -56,11 +60,24 @@ export const useDumplingsStore = defineStore("dumplingsStore", {
     async fetchRecipes(): Promise<void> {
       await Promise.all([this.getAllRecipes(), this.getMyRecipes()]);
     },
-    saveFactorsForRecipe(imgUrl: string, factorsObj: IInputPrompts) {
+    saveFactorsForRecipe(
+      imgUrl: string,
+      factorsObj: IInputPrompts,
+      name: string
+    ) {
       this.generatingRecipe = {
         factors: factorsObj,
         imgSrc: imgUrl,
+        recipeName: name,
       };
+    },
+  },
+  getters: {
+    currentRecipeName(state) {
+      return state.generatingRecipe?.recipeName;
+    },
+    currentRecipeUrlImgPath(state) {
+      return state.generatingRecipe?.imgSrc;
     },
   },
 });

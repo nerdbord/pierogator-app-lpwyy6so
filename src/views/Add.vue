@@ -101,14 +101,15 @@ testRecipe.value.setInstructions({
 });
 
 function saveDumpling(): void {
-  //console.log(testRecipe);
+  console.log(testRecipe.value);
   // dumplingStore.addRecipe(testRecipe);
   console.log(toRaw(InputsPrompt));
   console.log(testRecipe.value.imageSrc);
 
   dumplingStore.saveFactorsForRecipe(
     testRecipe.value.imageSrc,
-    toRaw(InputsPrompt)
+    toRaw(InputsPrompt),
+    testRecipe.value.name
   );
   router.replace({ path: "/recipe/generate" });
 }
