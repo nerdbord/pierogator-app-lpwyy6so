@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
 import { ref, reactive, isProxy, toRaw } from "vue";
 import { useGlobalStore } from "@/store/app";
 import DumplingGenerator from "@/components/DumplingGenerator.vue";
@@ -100,8 +101,16 @@ testRecipe.value.setInstructions({
 });
 
 function saveDumpling(): void {
-  console.log(testRecipe.value);
+  //console.log(testRecipe);
   // dumplingStore.addRecipe(testRecipe);
+  console.log(toRaw(InputsPrompt));
+  console.log(testRecipe.value.imageSrc);
+
+  dumplingStore.saveFactorsForRecipe(
+    testRecipe.value.imageSrc,
+    toRaw(InputsPrompt)
+  );
+  router.replace({ path: "/recipe/generate" });
 }
 
 const toogleCakeInput = () => {
