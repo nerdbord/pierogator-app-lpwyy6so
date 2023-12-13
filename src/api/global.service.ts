@@ -5,7 +5,6 @@ import { ApiTypeEnum } from '@/enums/ApiType.enum';
 
 function handleApiError<T>(error: AxiosError): T {
 	const globalStore = useGlobalStore();
-	globalStore.setLoading(false);
 
 	let message = 'Coś poszło nie tak, spróbuj ponownie';
 	if (error.response?.status === 401 || error.response?.status === 403) {
@@ -23,7 +22,6 @@ export async function postData<T, K = void>(
 	ApiType: ApiTypeEnum = ApiTypeEnum.NERDBORD
 ): Promise<K> {
 	const globalStore = useGlobalStore();
-	globalStore.setLoading(true);
 	try {
 		const res = await API.post(path, body, {
 			headers: {
@@ -44,7 +42,6 @@ export async function postData<T, K = void>(
 
 export async function deleteData(path: string): Promise<void> {
 	const globalStore = useGlobalStore();
-	globalStore.setLoading(true);
 	try {
 		await API.delete(path, {
 			headers: {
@@ -59,7 +56,6 @@ export async function deleteData(path: string): Promise<void> {
 
 export async function getData<T>(path: string): Promise<T> {
 	const globalStore = useGlobalStore();
-	globalStore.setLoading(true);
 	try {
 		const res = await API.get(path, {
 			headers: {

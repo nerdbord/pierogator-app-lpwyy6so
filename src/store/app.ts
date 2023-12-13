@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
 
 interface GlobalStore {
-	isLoading: boolean;
 	currentRequests: string[];
 	isError: boolean;
 	errorMessage?: string;
 }
 
 const initState = (): GlobalStore => ({
-	isLoading: false,
 	currentRequests: [],
 	isError: false,
 	errorMessage: undefined,
@@ -17,9 +15,6 @@ const initState = (): GlobalStore => ({
 export const useGlobalStore = defineStore('globalStore', {
 	state: initState,
 	actions: {
-		setLoading(value: boolean): void {
-			this.isLoading = value;
-		},
 		addRequest(requestName: string): void {
 			this.currentRequests.push(requestName);
 		},

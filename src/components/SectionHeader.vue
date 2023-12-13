@@ -10,18 +10,18 @@
 			{{ headerText }}
 		</h2>
 		<div class="d-flex">
-			<Loader />
+			<Loader :is-loading="isLoading" />
 			<slot></slot>
 		</div>
 	</header>
 </template>
 
 <script setup lang="ts">
-import Loader from './Loader.vue';
-import Button from './Button.vue';
-import dumpling from '../assets/dumpling.svg';
+import Loader from '@/components/Loader.vue';
+import dumpling from '@/assets/dumpling.svg';
 
 defineProps({
 	headerText: { type: String, required: true },
+	isLoading: { type: Boolean, default: false },
 });
 </script>
