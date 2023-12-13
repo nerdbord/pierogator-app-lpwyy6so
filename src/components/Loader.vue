@@ -1,14 +1,13 @@
 <template>
-	<div v-if="useGlobalStore().isLoading" style="margin-right: 8px">
+	<div v-if="isLoading" style="margin-right: 8px">
 		<v-img :src="loader" width="36" height="36" class="loader"></v-img>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useGlobalStore } from '@/store/app';
-import loader from '../assets/loader.svg';
+import loader from '@/assets/loader.svg';
 
-const props = defineProps({
+defineProps({
 	isLoading: {
 		type: Boolean,
 		default: false,

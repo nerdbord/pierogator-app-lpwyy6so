@@ -1,9 +1,10 @@
 <template>
 	<section>
-		<SectionHeader :header-text="'Moje pierogi'">
+		<SectionHeader :header-text="'Moje pierogi'" :is-loading="isLoading">
 			<Button :button-text="'Nowy pieróg'" @click="addNewRecipeClicked" />
 		</SectionHeader>
 		<div
+			v-if="!isLoading"
 			class="d-flex flex-wrap justify-space-between"
 			style="margin-top: 16px"
 		>
@@ -19,14 +20,21 @@
 	</section>
 </template>
 <script setup lang="ts">
-import SectionHeader from './SectionHeader.vue';
-import Button from './Button.vue';
-import { useDumplingsStore } from '@/store/dumplings.store';
-import RecipeCard from './RecipeCard.vue';
-import { RoutesNames } from '@/enums/RoutesNames.enum';
+import { onBeforeMount, ref } from 'vue';
 import router from '@/router';
+import SectionHeader from '@/components/SectionHeader.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
+import Button from '@/components/Button.vue';
+import { useDumplingsStore } from '@/store/dumplings.store';
+import { RoutesNames } from '@/enums/RoutesNames.enum';
 
 const dumplingsStore = useDumplingsStore();
+const isLoading = ref(false);
+
+onBeforeMount(() => {
+	isLoading.value = true;
+	dumplingsStore.getMyRecipes().finally(() => (isLoading.value = false));
+});
 
 function addNewRecipeClicked(): void {
 	router.push({ name: RoutesNames.Add });
