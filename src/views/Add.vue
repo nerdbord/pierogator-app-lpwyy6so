@@ -31,7 +31,7 @@
     :ingredients="[InputsPrompt.factors.val]"
     :img-src="dumplingStore.currentRecipe?.imageSrc || ''"
     :name="dumplingStore.currentRecipe?.name || ''"
-    style="margin-bottom: 40px"
+    style="margin: 16px 0 40px"
     @update-img-src="updateImg"
     @update-name="updateName"
   />
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import router from "@/router";
-import { ref, reactive, toRaw } from "vue";
+import { ref, reactive, toRaw, onMounted } from "vue";
 import DumplingGenerator from "@/components/DumplingGenerator.vue";
 import InputPromp from "@/components/InputPromp.vue";
 import CTA from "@/components/CTA.vue";
@@ -179,14 +179,7 @@ const sendPrompt = (e: Event) => {
   });
 };
 
-// const InputsPrompt: IInputPrompts = reactive({
-//   cake: { val: "", isDisable: false },
-//   feelings: { val: "", isDisable: false },
-//   factors: { val: "", isDisable: false },
-// });
-
 onMounted(() => {
-  console.log("Addvue mounted");
   if (dumplingStore.generatingRecipe) {
     InputsPrompt.cake.isDisable =
       dumplingStore.generatingRecipe.factors.cake.isDisable;

@@ -28,6 +28,9 @@
       :input-id="currentRecipeName"
       :max-length="40"
       :is-disabled="false"
+      :label="'Uwagi do przepisu'"
+      :placeholder="'chrupiące pierogi bez pieczenia, bez użycia miksera'"
+      style="margin-bottom: 16px"
       @updateInputValue="updateNotes"
     />
     <div v-if="isRecipeGenerated" class="d-flex flex-column" style="gap: 8px">
