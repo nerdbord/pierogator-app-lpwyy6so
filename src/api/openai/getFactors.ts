@@ -26,7 +26,6 @@ interface GetNameResponse {
 }
 
 export async function getFactors(promptList: string) {
-  console.log(promptList);
   const data = await postData<GetNamePayload, any>(
     "/openai/chat/completions",
     {
