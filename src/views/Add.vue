@@ -43,8 +43,7 @@
 
 <script setup lang="ts">
 import router from "@/router";
-import { ref, reactive, isProxy, toRaw } from "vue";
-import { useGlobalStore } from "@/store/app";
+import { ref, reactive, toRaw } from "vue";
 import DumplingGenerator from "@/components/DumplingGenerator.vue";
 import InputPromp from "@/components/InputPromp.vue";
 import CTA from "@/components/CTA.vue";
@@ -52,10 +51,8 @@ import SectionHeader from "@/components/SectionHeader.vue";
 import Button from "@/components/Button.vue";
 import { useDumplingsStore } from "../store/dumplings.store";
 import { Recipe } from "@/models/Recipe";
-import { Ingredients } from "@/models/Ingredients";
-import { Interface } from "readline";
 import { getFactors } from "@/api/openai/getFactors";
-import { onMounted } from "vue";
+import { RoutesNames } from "@/enums/RoutesNames.enum";
 
 interface IFactor {
   val: string;
@@ -92,15 +89,12 @@ function updateName(name: string): void {
 }
 
 function saveDumpling(): void {
-  // dumplingStore.addRecipe(testRecipe);
-  console.log(toRaw(InputsPrompt));
-
   dumplingStore.saveFactorsForRecipe(
     testRecipe.value.imageSrc,
     toRaw(InputsPrompt),
     testRecipe.value.name
   );
-  router.push({ path: "/recipe/generate" });
+  router.push({ name: RoutesNames.Recipe });
 }
 
 const toogleCakeInput = () => {
@@ -139,10 +133,10 @@ function translateKeyName(key: string): string {
 
 function filterAndTransform(inputPrompts: IInputPrompts): IFactor[] {
   return Object.entries(inputPrompts)
-    .filter(([key, value]) => !value.isDisable) // Filtruje tylko obiekty z isDisable: false
+    .filter(([key, value]) => !value.isDisable)
     .map(([key, value]) => ({
-      ...value, // Rozkłada istniejące właściwości obiektu
-      name: translateKeyName(key), // Dodaje klucz jako nowe pole 'name'
+      ...value,
+      name: translateKeyName(key),
     }));
 }
 type Message = {

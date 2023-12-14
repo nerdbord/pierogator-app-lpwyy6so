@@ -1,39 +1,40 @@
 <template>
+  <SectionHeader :header-text="'Pieróg'">
+    <Button :button-text="'Zmień'" @click="pushToPreviousPage" />
+  </SectionHeader>
+  <div v-if="dumplingsStore.currentRecipe" style="margin-bottom: 16px">
+    <main class="picture--container" style="margin: 16px 0">
+      <v-img
+        :width="'100%'"
+        :max-height="300"
+        :src="dumplingsStore.currentRecipe.imageSrc"
+        cover
+      ></v-img>
+    </main>
+    <Input
+      :value="dumplingsStore.currentRecipe.name"
+      :input-id="currentRecipeName"
+      :max-length="40"
+      :is-disabled="true"
+    />
+  </div>
+
+  <SectionHeader :header-text="'Przepis'" :is-loading="isFetchingRecipe">
+    <Button :button-text="'Generuj'" @click="generateRecipe()" />
+  </SectionHeader>
   <div>
-    <SectionHeader :header-text="'Pieróg'">
-      <Button :button-text="'Zmień'" @click="pushToPreviousPage" />
-    </SectionHeader>
-    <div>
-      <input
-        v-model="currentRecipeName"
-        style="width: 100%; outline: none"
-        type="text"
-        placeholder="Enter a Tag"
-        disabled="true"
-      />
-      <main v-if="currentRecipeUrlImgPath" class="picture--container">
-        <v-img
-          :width="'100%'"
-          :max-height="300"
-          :src="currentRecipeUrlImgPath"
-          cover
-        ></v-img>
-      </main>
-      <SectionHeader :header-text="'Przepis'">
-        <Button :button-text="'Generuj'" @click="generateRecipe()" />
-      </SectionHeader>
-      <input
-        :v-model="notes"
-        style="width: 100%; outline: none"
-        type="text"
-        placeholder="dodaj uwagi"
-      />
-      <div v-if="isRecipeGenerated" class="d-flex flex-column" style="gap: 8px">
-        <IngredientsAccordion />
-        <PrepairAccordion />
-        <ServingAccordion />
-        <CTA :button-text="'Udostępnij pieroga'" @click="createDumpling" />
-      </div>
+    <Input
+      :value="notes"
+      :input-id="currentRecipeName"
+      :max-length="40"
+      :is-disabled="false"
+      @updateInputValue="updateNotes"
+    />
+    <div v-if="isRecipeGenerated" class="d-flex flex-column" style="gap: 8px">
+      <IngredientsAccordion />
+      <PrepairAccordion />
+      <ServingAccordion />
+      <CTA :button-text="'Udostępnij pieroga'" @click="createDumpling" />
     </div>
   </div>
 </template>
@@ -46,13 +47,10 @@ import { useDumplingsStore } from "@/store/dumplings.store";
 import IngredientsAccordion from "@/components/IngredientsAccordion.vue";
 import SectionHeader from "@/components/SectionHeader.vue";
 import Button from "@/components/Button.vue";
-import InputPromp from "@/components/InputPromp.vue";
 import {
   getDoughIngredientsDetails,
   getFillIngredientsDetails,
 } from "@/api/openai/getRecipe";
-import { Recipe } from "@/models/Recipe";
-import { Ingredients } from "@/models/Ingredients";
 import { getPreparationSteps } from "@/api/openai/preparations";
 import ServingAccordion from "@/components/ServingAccordion.vue";
 import PrepairAccordion from "@/components/PrepairAccordion.vue";
@@ -61,6 +59,7 @@ import { onUnmounted } from "vue";
 import { ICreateRecipe } from "@/api/pierogator/createRecipe";
 import { RoutesNames } from "@/enums/RoutesNames.enum";
 import { useGlobalStore } from "@/store/app";
+import Input from "@/components/Input.vue";
 
 const dumplingsStore = useDumplingsStore();
 const { generatingRecipe, currentRecipeName, currentRecipeUrlImgPath } =
@@ -68,9 +67,14 @@ const { generatingRecipe, currentRecipeName, currentRecipeUrlImgPath } =
 
 const notes = ref("");
 const isRecipeGenerated = ref(false);
+const isFetchingRecipe = ref(false);
+
+function updateNotes(value: string): void {
+  notes.value = value;
+}
 
 function pushToPreviousPage(): void {
-  router.push({ path: "/recipe/add" });
+  router.push({ name: RoutesNames.Recipe });
 }
 
 interface Ingredient {
@@ -150,4 +154,10 @@ async function createDumpling(): Promise<void> {
 // });
 </script>
 
-<style type="scss" scoped></style>
+<style lang="scss" scoped>
+@import "../styles/variables.scss";
+.picture--container {
+  border-radius: $border-radius-base;
+  overflow: hidden;
+}
+</style>

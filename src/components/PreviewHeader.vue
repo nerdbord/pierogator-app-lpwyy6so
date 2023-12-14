@@ -15,10 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import Loader from './Loader.vue';
 import Button from './Button.vue';
 import Input from './Input.vue';
-import dumpling from '../assets/dumpling.svg';
 import ReversedSectionHeader from './ReversedSectionHeader.vue';
 import router from '@/router';
 
