@@ -1,3 +1,4 @@
+import { ICreateRecipe } from '@/api/pierogator/createRecipe';
 import { Ingredient, Ingredients } from './Ingredients';
 import { Instructions } from './Instructions';
 
@@ -31,5 +32,14 @@ export class Recipe {
 	setInstructions(instructions: Omit<Instructions, 'setInstructions'>): this {
 		this.instructions.setInstructions(instructions);
 		return this;
+	}
+
+	getPostPayload(): ICreateRecipe {
+		return {
+			name: this.name,
+			imageSrc: this.imageSrc,
+			ingredients: this.ingredients,
+			instructions: this.instructions,
+		};
 	}
 }

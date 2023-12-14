@@ -5,7 +5,7 @@ import { getAllRecipes } from '@/api/pierogator/getAllRecipes';
 import { getMyRecipes } from '@/api/pierogator/getMyRecipes';
 import { getRecipeById } from '@/api/pierogator/getRecipeById';
 import { Recipe } from '@/models/Recipe';
-import { avoidMultipleRequest } from '@/helpers.ts/avoidMultipleRequest';
+import { ICreateRecipe } from '@/api/pierogator/createRecipe';
 
 interface IFactor {
 	val: string;
@@ -49,7 +49,7 @@ export const useDumplingsStore = defineStore('dumplingsStore', {
 		async getRecipeById(recipeId: string): Promise<void> {
 			this.currentRecipe = await getRecipeById(recipeId);
 		},
-		async addRecipe(recipe: Recipe): Promise<void> {
+		async addRecipe(recipe: ICreateRecipe): Promise<void> {
 			await createRecipe(recipe);
 			this.fetchRecipes();
 		},

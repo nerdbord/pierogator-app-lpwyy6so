@@ -21,7 +21,6 @@ export async function postData<T, K = void>(
 	body: T,
 	ApiType: ApiTypeEnum = ApiTypeEnum.NERDBORD
 ): Promise<K> {
-	const globalStore = useGlobalStore();
 	try {
 		const res = await API.post(path, body, {
 			headers: {
@@ -31,8 +30,6 @@ export async function postData<T, K = void>(
 						: `${import.meta.env.VITE_API_KEY_OPENAI}`,
 			},
 		});
-		const data = res.data;
-
 		return res.data as K;
 	} catch (err) {
 		const error = err as AxiosError;
