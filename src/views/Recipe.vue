@@ -135,6 +135,7 @@ async function generateRecipe() {
 	}
 	getInstructions();
 	isFetchingRecipe.value = false;
+	isRecipeGenerated.value = true;
 }
 
 async function createDumpling(): Promise<void> {
@@ -146,7 +147,6 @@ async function createDumpling(): Promise<void> {
 			globalStore.addErrorMessage(`${res.name} został dodany!`);
 			dumplingsStore.currentRecipe = undefined;
 			router.push({ name: RoutesNames.Main });
-			isRecipeGenerated.value = false;
 		});
 	} else {
 		throw Error('There is no recipe in store');
