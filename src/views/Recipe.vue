@@ -32,6 +32,7 @@
 				<IngredientsAccordion />
 				<PrepairAccordion />
 				<ServingAccordion />
+				<CTA :button-text="'Udostępnij pieroga'" @click="createDumpling" />
 			</div>
 		</div>
 	</div>
@@ -55,12 +56,13 @@ import { Ingredients } from '@/models/Ingredients';
 import { getPreparationSteps } from '@/api/openai/preparations';
 import ServingAccordion from '@/components/ServingAccordion.vue';
 import PrepairAccordion from '@/components/PrepairAccordion.vue';
+import CTA from '@/components/CTA.vue';
+import { onUnmounted } from 'vue';
+import { ICreateRecipe } from '@/api/pierogator/createRecipe';
 
 const dumplingsStore = useDumplingsStore();
 const { generatingRecipe, currentRecipeName, currentRecipeUrlImgPath } =
 	storeToRefs(dumplingsStore);
-
-dumplingsStore.currentRecipe = new Recipe();
 
 const notes = ref('');
 const isRecipeGenerated = ref(false);
@@ -81,13 +83,15 @@ async function getDataForFirstAccordion(
 	const dough = await getDoughIngredientsDetails(doughPrompt);
 	const filling = await getFillIngredientsDetails(fillPrompt);
 
-	dumplingsStore.currentRecipe?.setIngredients({
-		dough,
-		filling,
-	});
+	if (dumplingsStore.currentRecipe) {
+		dumplingsStore.currentRecipe?.setIngredients({
+			dough,
+			filling,
+		});
+	} else {
+		throw Error('There is no recipe in store');
+	}
 }
-
-// click -> generateRecipe() -> tworzy w sobie prompty -> getData... ktora przypisuje do store'a otrzymane value;
 
 async function generateRecipe() {
 	if (generatingRecipe?.value === undefined) {
@@ -123,6 +127,20 @@ async function generateRecipe() {
 	getInstructions();
 	isRecipeGenerated.value = true;
 }
+
+async function createDumpling(): Promise<void> {
+	if (dumplingsStore.currentRecipe) {
+		const payload: ICreateRecipe =
+			dumplingsStore.currentRecipe.getPostPayload();
+		dumplingsStore.addRecipe(payload);
+	} else {
+		throw Error('There is no recipe in store');
+	}
+}
+
+onUnmounted(() => {
+	dumplingsStore.currentRecipe = undefined;
+});
 </script>
 
 <style type="scss" scoped></style>

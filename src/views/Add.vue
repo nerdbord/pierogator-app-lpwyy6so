@@ -29,8 +29,8 @@
 	</div>
 	<DumplingGenerator
 		:ingredients="[InputsPrompt.factors.val]"
-		:img-src="testRecipe.imageSrc"
-		:name="testRecipe.name"
+		:img-src="dumplingStore.currentRecipe!.imageSrc"
+		:name="dumplingStore.currentRecipe!.name"
 		style="margin-bottom: 40px"
 		@update-img-src="updateImg"
 		@update-name="updateName"
@@ -77,32 +77,19 @@ const InputsPrompt: IInputPrompts = reactive({
 const isFetchingIngredients = ref(false);
 const testRecipe = ref(new Recipe());
 const dumplingStore = useDumplingsStore();
+dumplingStore.currentRecipe = new Recipe();
 
 function updateImg(url: string): void {
-	testRecipe.value.setImageSrc(url);
+	dumplingStore.currentRecipe?.setImageSrc(url);
 }
 
 function updateName(name: string): void {
-	testRecipe.value.setName(name);
+	dumplingStore.currentRecipe?.setName(name);
 }
 
-testRecipe.value.setIngredients({
-	dough: [{ name: 'kakao', quantity: '1 łyzka' }],
-	filling: [{ name: 'budyń', quantity: '15 opakowań' }],
-});
-
-testRecipe.value.setInstructions({
-	dough_preparation: ['doug preparation'],
-	filling_preparation: ['some filling prep #1', 'filling prep #2'],
-	forming_and_cooking_dumplings: ['forming _____ 123'],
-	serving: ['podawać z colą'],
-});
-
 function saveDumpling(): void {
-	console.log(testRecipe.value);
 	// dumplingStore.addRecipe(testRecipe);
 	console.log(toRaw(InputsPrompt));
-	console.log(testRecipe.value.imageSrc);
 
 	dumplingStore.saveFactorsForRecipe(
 		testRecipe.value.imageSrc,
