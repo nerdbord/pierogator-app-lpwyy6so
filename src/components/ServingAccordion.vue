@@ -15,6 +15,6 @@ const dumplingsStore = useDumplingsStore();
 
 const servingInstructions = computed(() => {
 	const arr = dumplingsStore.currentRecipe?.instructions.serving || [];
-	return arr.join(', ');
+	return arr.join(' ');
 });
 </script>

@@ -7,7 +7,10 @@ export class Ingredients {
 	dough: Ingredient[] = [];
 	filling: Ingredient[] = [];
 
-	setIngredients(ingredients: Omit<Ingredients, 'setIngredients'>): this {
+	setIngredients(ingredients: {
+		dough: Ingredient[];
+		filling: Ingredient[];
+	}): this {
 		this.dough = ingredients.dough;
 		this.filling = ingredients.filling;
 		return this;

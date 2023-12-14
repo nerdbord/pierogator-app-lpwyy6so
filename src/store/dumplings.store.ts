@@ -7,16 +7,34 @@ import { getRecipeById } from '@/api/pierogator/getRecipeById';
 import { Recipe } from '@/models/Recipe';
 import { avoidMultipleRequest } from '@/helpers.ts/avoidMultipleRequest';
 
+interface IFactor {
+	val: string;
+	isDisable: boolean;
+	name?: string;
+}
+interface IInputPrompts {
+	[key: string]: IFactor;
+	cake: IFactor;
+	feelings: IFactor;
+	factors: IFactor;
+}
+
 interface DumplingsStore {
 	allRecipes: Recipe[];
 	myRecipes: Recipe[];
 	currentRecipe?: Recipe;
+	generatingRecipe?: {
+		factors: IInputPrompts;
+		imgSrc: string;
+		recipeName: string;
+	};
 }
 
 const initState = (): DumplingsStore => ({
 	allRecipes: [],
 	myRecipes: [],
 	currentRecipe: undefined,
+	generatingRecipe: undefined,
 });
 
 export const useDumplingsStore = defineStore('dumplingsStore', {
@@ -41,6 +59,25 @@ export const useDumplingsStore = defineStore('dumplingsStore', {
 		},
 		async fetchRecipes(): Promise<void> {
 			await Promise.all([this.getAllRecipes(), this.getMyRecipes()]);
+		},
+		saveFactorsForRecipe(
+			imgUrl: string,
+			factorsObj: IInputPrompts,
+			name: string
+		) {
+			this.generatingRecipe = {
+				factors: factorsObj,
+				imgSrc: imgUrl,
+				recipeName: name,
+			};
+		},
+	},
+	getters: {
+		currentRecipeName(state) {
+			return state.generatingRecipe?.recipeName;
+		},
+		currentRecipeUrlImgPath(state) {
+			return state.generatingRecipe?.imgSrc;
 		},
 	},
 });

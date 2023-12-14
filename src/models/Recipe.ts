@@ -1,4 +1,4 @@
-import { Ingredients } from './Ingredients';
+import { Ingredient, Ingredients } from './Ingredients';
 import { Instructions } from './Instructions';
 
 export class Recipe {
@@ -20,7 +20,10 @@ export class Recipe {
 		return this;
 	}
 
-	setIngredients(ingredients: Omit<Ingredients, 'setIngredients'>): this {
+	setIngredients(ingredients: {
+		dough: Ingredient[];
+		filling: Ingredient[];
+	}): this {
 		this.ingredients.setIngredients(ingredients);
 		return this;
 	}

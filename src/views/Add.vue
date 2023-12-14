@@ -42,14 +42,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import router from '@/router';
+import { ref, reactive, isProxy, toRaw } from 'vue';
 import { useGlobalStore } from '@/store/app';
 import DumplingGenerator from '@/components/DumplingGenerator.vue';
 import InputPromp from '@/components/InputPromp.vue';
 import CTA from '@/components/CTA.vue';
 import SectionHeader from '@/components/SectionHeader.vue';
 import Button from '@/components/Button.vue';
-import { useDumplingsStore } from '@/store/dumplings.store';
+import { useDumplingsStore } from '../store/dumplings.store';
 import { Recipe } from '@/models/Recipe';
 import { Ingredients } from '@/models/Ingredients';
 import { Interface } from 'readline';
@@ -75,6 +76,7 @@ const InputsPrompt: IInputPrompts = reactive({
 
 const isFetchingIngredients = ref(false);
 const testRecipe = ref(new Recipe());
+const dumplingStore = useDumplingsStore();
 
 function updateImg(url: string): void {
 	testRecipe.value.setImageSrc(url);
@@ -99,6 +101,15 @@ testRecipe.value.setInstructions({
 function saveDumpling(): void {
 	console.log(testRecipe.value);
 	// dumplingStore.addRecipe(testRecipe);
+	console.log(toRaw(InputsPrompt));
+	console.log(testRecipe.value.imageSrc);
+
+	dumplingStore.saveFactorsForRecipe(
+		testRecipe.value.imageSrc,
+		toRaw(InputsPrompt),
+		testRecipe.value.name
+	);
+	router.push({ path: '/recipe/generate' });
 }
 
 const toogleCakeInput = () => {
