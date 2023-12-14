@@ -111,7 +111,7 @@ function saveDumpling(): void {
     toRaw(InputsPrompt),
     testRecipe.value.name
   );
-  router.replace({ path: "/recipe/generate" });
+  router.push({ path: "/recipe/generate" });
 }
 
 const toogleCakeInput = () => {
