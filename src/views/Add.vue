@@ -81,10 +81,12 @@ dumplingStore.currentRecipe = new Recipe();
 
 function updateImg(url: string): void {
 	dumplingStore.currentRecipe?.setImageSrc(url);
+	testRecipe.value.imageSrc = url;
 }
 
 function updateName(name: string): void {
 	dumplingStore.currentRecipe?.setName(name);
+	testRecipe.value.name = name;
 }
 
 function saveDumpling(): void {

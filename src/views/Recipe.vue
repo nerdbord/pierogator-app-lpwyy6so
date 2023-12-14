@@ -59,6 +59,8 @@ import PrepairAccordion from '@/components/PrepairAccordion.vue';
 import CTA from '@/components/CTA.vue';
 import { onUnmounted } from 'vue';
 import { ICreateRecipe } from '@/api/pierogator/createRecipe';
+import { RoutesNames } from '@/enums/RoutesNames.enum';
+import { useGlobalStore } from '@/store/app';
 
 const dumplingsStore = useDumplingsStore();
 const { generatingRecipe, currentRecipeName, currentRecipeUrlImgPath } =
@@ -132,7 +134,12 @@ async function createDumpling(): Promise<void> {
 	if (dumplingsStore.currentRecipe) {
 		const payload: ICreateRecipe =
 			dumplingsStore.currentRecipe.getPostPayload();
-		dumplingsStore.addRecipe(payload);
+		dumplingsStore.addRecipe(payload).then((res) => {
+			const globalStore = useGlobalStore();
+			globalStore.addErrorMessage(`${res.name} został dodany!`);
+			router.push({ name: RoutesNames.Main });
+			// dumplingsStore.fetchRecipes();
+		});
 	} else {
 		throw Error('There is no recipe in store');
 	}
