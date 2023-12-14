@@ -18,7 +18,7 @@ import { RoutesNames } from '@/enums/RoutesNames.enum';
 const router = useRoute();
 
 const headerSrc = computed(() => {
-	return router.meta.titleType === TitleTypeEnum.a
+	return router.meta.titleType === TitleTypeEnum.PIEROGATOR
 		? pierogator_swiateczny
 		: pierogarnia;
 });
