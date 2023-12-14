@@ -1,7 +1,8 @@
 <template>
 	<section>
-		<SectionHeader :header-text="'Pierogarnia'" />
+		<SectionHeader :header-text="'Pierogarnia'" :isLoading="isLoading" />
 		<div
+			v-if="!isLoading"
 			class="d-flex flex-wrap justify-space-between"
 			style="margin-top: 16px"
 		>
@@ -16,9 +17,16 @@
 	</section>
 </template>
 <script setup lang="ts">
-import SectionHeader from './SectionHeader.vue';
-import RecipeCard from './RecipeCard.vue';
+import { onBeforeMount, ref } from 'vue';
+import SectionHeader from '@/components/SectionHeader.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
 import { useDumplingsStore } from '@/store/dumplings.store';
 
 const dumplingsStore = useDumplingsStore();
+const isLoading = ref(false);
+
+onBeforeMount(() => {
+	isLoading.value = true;
+	dumplingsStore.getAllRecipes().finally(() => (isLoading.value = false));
+});
 </script>

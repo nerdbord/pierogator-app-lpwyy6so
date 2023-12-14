@@ -8,10 +8,4 @@
 <script lang="ts" setup>
 import MyRecipes from '@/components/MyRecipes.vue';
 import AllRecipes from '@/components/AllRecipes.vue';
-import { useDumplingsStore } from '@/store/dumplings.store';
-import { useGlobalStore } from '@/store/app';
-
-const dumplingsStore = useDumplingsStore();
-
-dumplingsStore.fetchRecipes().then((res) => useGlobalStore().setLoading(false));
 </script>
