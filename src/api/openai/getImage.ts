@@ -23,23 +23,19 @@ interface GetImagePayload {
 }
 
 export async function getImage(ingredients: string[]) {
-	const isApiCallAvailable = await avoidMultipleRequest('getImage');
+	const data = await postData<GetImagePayload, GetImageResponse>(
+		'/openai/images/generations',
+		{
+			model: ApiModelsEnum.DALL,
+			prompt: `Zdjęcie pieroga, którego składniki to: ${ingredients.join(
+				', '
+			)}`,
+			n: 1,
+			size: '1024x1024',
+		},
+		ApiTypeEnum.OPENAI
+	);
 
-	if (isApiCallAvailable) {
-		const data = await postData<GetImagePayload, GetImageResponse>(
-			'/openai/images/generations',
-			{
-				model: ApiModelsEnum.DALL,
-				prompt: `Zdjęcie pieroga, którego składniki to: ${ingredients.join(
-					', '
-				)}`,
-				n: 1,
-				size: '1024x1024',
-			},
-			ApiTypeEnum.OPENAI
-		);
-
-		const imageUrl = data.data[0].url;
-		return imageUrl;
-	}
+	const imageUrl = data.data[0].url;
+	return imageUrl;
 }

@@ -27,27 +27,24 @@ interface Choice {
 }
 
 export async function getName(prompt: string) {
-	const isApiCallAvailable = await avoidMultipleRequest('getName');
-	if (isApiCallAvailable) {
-		const messages: Message[] = [
-			{
-				role: 'user',
-				content: `Wymyśl nazwę dla pieroga, którego składniki to: ${prompt}. Zwróć tylko jedną nazwę, maks. 35 znaków.`,
-			},
-		];
+	const messages: Message[] = [
+		{
+			role: 'user',
+			content: `Wymyśl nazwę dla pieroga, którego składniki to: ${prompt}. Zwróć tylko jedną nazwę, maks. 35 znaków.`,
+		},
+	];
 
-		const data = await postData<GetNamePayload, GetNameResponse>(
-			'/openai/chat/completions',
-			{
-				model: ApiModelsEnum.GPT,
-				messages,
-			},
-			ApiTypeEnum.OPENAI
-		);
+	const data = await postData<GetNamePayload, GetNameResponse>(
+		'/openai/chat/completions',
+		{
+			model: ApiModelsEnum.GPT,
+			messages,
+		},
+		ApiTypeEnum.OPENAI
+	);
 
-		const choices: Choice[] = data.choices;
-		const generatedName = choices[0].message.content;
+	const choices: Choice[] = data.choices;
+	const generatedName = choices[0].message.content;
 
-		return generatedName;
-	}
+	return generatedName;
 }
