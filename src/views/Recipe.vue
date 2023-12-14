@@ -7,7 +7,7 @@
 			<v-img
 				:width="'100%'"
 				:max-height="300"
-				:src="dumplingsStore.currentRecipe?.imageSrc"
+				:src="dumplingsStore.currentRecipe.imageSrc"
 				cover
 			></v-img>
 		</main>
