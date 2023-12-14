@@ -76,6 +76,7 @@ const InputsPrompt: IInputPrompts = reactive({
 
 const isFetchingIngredients = ref(false);
 const testRecipe = ref(new Recipe());
+const dumplingStore = useDumplingsStore();
 
 function updateImg(url: string): void {
 	testRecipe.value.setImageSrc(url);
